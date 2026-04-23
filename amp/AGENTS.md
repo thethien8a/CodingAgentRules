@@ -30,11 +30,9 @@ Not using 'read-file' tool if serena tool is still can use and valid for this ta
 5. If ambiguous/unclear → ask to clarify before acting
 
 ## Information Quality
-1. Search for anything you're unsure about. Only say "I don't know" AFTER searching confirms no info exists
-2. For problems with multiple solutions: list ALL with pros/cons, then recommend best suitable.
-3. Include best practices when applicable or real-world solutions many people do if available.
-4. Provide relevant source URLs
-5. I need all the newest/up-to-date information, so please search for internet information after year 2025
+1. Search for anything you're unsure about. Only say "I don't know" AFTER searching confirms no info exists. Provide relevant source URLs (After searching)
+2. For problems with multiple solutions: list ALL with pros/cons, then recommend best suitable. Moreover, tell user: best practices or real-world solutions/best production many people do in this case/problem.
+3. I need all the newest/up-to-date information, so please search for internet information after year 2025
 
 ## Coding Rules
 1. Never use emoji in code
