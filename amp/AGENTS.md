@@ -1,39 +1,67 @@
 # Global Rules
 
-## CRITICAL — Skills First (MUST follow)
-BEFORE doing ANY work, ALWAYS load the matching skill FIRST (Skill must be loaded if valid):
-- ANY code reading/searching/editing task → load `serena-code` skill FIRST, then use ONLY serena MCP tools
-- Web search needed → load `exa-search` skill FIRST
-- Python coding task → load `python-clean-code` skill FIRST, read it, then code
-- Docker task → load `docker-expert` skill FIRST
+<tool_priority>
+For code files (read/edit/navigate/search symbols):
+- Edit symbol → `mcp__serena__replace_content`
+- Find symbol / overview → `mcp__serena__find_symbol`, `mcp__serena__get_symbols_overview`
+- Search pattern in code → `mcp__serena__search_for_pattern`
+- Find references → `mcp__serena__find_referencing_symbols`
 
-## Serena — MANDATORY for all code operations
-**HARD RULE: After loading serena-code, NEVER call Read/Grep/glob/finder/edit_file for code files. Violations = broken rule.**
+For everything else, built-in tools are fine:
+- Reading config / docs / yaml / json / md / env → `Read`
+- Listing directories / finding files by name → `glob` or `Read`
 
-Startup sequence (NO EXCEPTIONS):
-1. `check_onboarding_performed` → if not done → `onboarding` FIRST
-2. Then use ONLY these for code:
-   - Understand code → `mcp__serena__get_symbols_overview` + `mcp__serena__find_symbol`
-   - Search code → `mcp__serena__find_referencing_symbols` / `mcp__serena__search_for_pattern`
-   - Edit code → `mcp__serena__replace_content`
-   - Find files → `mcp__serena__find_file` / `mcp__serena__list_dir`
-   - Navigate → `mcp__serena__find_symbol` with name_path_pattern
+Fallback rule: IF a Serena tool returns error/timeout → use built-in `Read` / `Grep` / `edit_file`.
+</tool_priority>
 
-Fallback to built-in tools ONLY if Serena MCP server fails to respond (error/timeout). 
-Not using 'read-file' tool if serena tool is still can use and valid for this task (To optimize tokens)
+<serena_setup>
+Trigger: ANY task that involves reading/searching/editing files 
 
-## Response Format
-1. Start with "YOOO!"
-2. Mirror user's language
-3. Classify: ASK (explain) vs EDIT (code changes)
-4. If unsure → search first, never fabricate
-5. If ambiguous/unclear → ask to clarify before acting
+Steps (in order, no skipping):
+1. Call `mcp__serena__check_onboarding_performed`
+2. If not done → call `mcp__serena__onboarding`
+3. Then use serena tools for all subsequent code operations
 
-## Information Quality
-1. Search for anything you're unsure about. Only say "I don't know" AFTER searching confirms no info exists. Provide relevant source URLs (After searching)
-2. For problems with multiple solutions: list ALL with pros/cons, then recommend best suitable. Moreover, tell user: best practices or real-world solutions/best production many people do in this case/problem.
-3. I need all the newest/up-to-date information, so please search for internet information after year 2025
+Skip ONLY for: pure conceptual questions, reading single config/doc file (yaml/json/md/env), or web research tasks.
 
-## Coding Rules
-1. Never use emoji in code
-2. Comments: explain WHY, not WHAT — never restate code
+Self-check before answering ANY "what does X do in this project" question: did I use `mcp__serena__search_for_pattern` or `find_symbol`? If no → I violated the rule.
+</serena_setup>
+
+<skills_autoload>
+Auto-load skill IMMEDIATELY (before any other tool call) when the task matches its description. No exceptions, no "I'll skip this short task".
+
+Mapping (load when trigger matches), example:
+- Python code (read/write/review/refactor `.py`) → `python-clean-code` + `serena-code`
+- Code edit/search/navigate inside `src/` → `serena-code`
+- Debug error / investigate bug / "not working" / stack trace → `debugger`
+- Web search / find docs / code examples → `exa-search`
+
+Self-check before first non-trivial tool call: does this task match a skill trigger above? If yes → load it now via the `skill` tool, do NOT proceed without loading.
+
+You only need to load a skill ONCE per conversation. After loaded, follow its instructions.
+</skills_autoload>
+
+<response_format>
+- Open every reply with `YOOO!`
+- Mirror user's language (Vietnamese ↔ English)
+- Classify intent first:
+  - ASK → explain only, no edits
+  - EDIT → make changes, then verify
+- IF the request is ambiguous → ask ONE clarifying question before acting
+</response_format>
+
+<information_quality>
+- Search the web before saying "I don't know" — cite source URLs for post-2025 facts
+- For problems with multiple valid solutions → list options + trade-offs, then recommend the best fit
+- Never fabricate APIs, library behavior, or version numbers — verify first
+</information_quality>
+
+<coding_rules>
+- No emoji in code
+- Comments explain WHY, not WHAT
+</coding_rules>
+
+<shell_commands>
+- Prefer prefixing with `rtk` for token optimization (e.g. `rtk git status`)
+- IF you see `rtk: program not found` or `Binary 'X' not found on PATH` → use the raw command directly, do NOT retry with rtk
+</shell_commands>
