@@ -1,4 +1,4 @@
-# Global Rules
+# MUST FOLLOW ALL THE RULES BELOW, NO EXCEPTIONS
 
 <tool_priority>
 For code files (read/edit/navigate/search symbols):
@@ -14,19 +14,6 @@ For everything else, built-in tools are fine:
 Fallback rule: IF a Serena tool returns error/timeout → use built-in `Read` / `Grep` / `edit_file`.
 </tool_priority>
 
-<serena_setup>
-Trigger: ANY task that involves reading/searching/editing files 
-
-Steps (in order, no skipping):
-1. Call `mcp__serena__check_onboarding_performed`
-2. If not done → call `mcp__serena__onboarding`
-3. Then use serena tools for all subsequent code operations
-
-Skip ONLY for: pure conceptual questions, reading single config/doc file (yaml/json/md/env), or web research tasks.
-
-Self-check before answering ANY "what does X do in this project" question: did I use `mcp__serena__search_for_pattern` or `find_symbol`? If no → I violated the rule.
-</serena_setup>
-
 <skills_autoload>
 Auto-load skill IMMEDIATELY (before any other tool call) when the task matches its description. No exceptions, no "I'll skip this short task".
 
@@ -34,7 +21,7 @@ Mapping (load when trigger matches), example:
 - Python code (read/write/review/refactor `.py`) → `python-clean-code` + `serena-code`
 - Code edit/search/navigate inside `src/` → `serena-code`
 - Debug error / investigate bug / "not working" / stack trace → `debugger`
-- Web search / find docs / code examples → `exa-search`
+- Web search / find docs / code examples → MCP `exa` (tools: `web_search_exa`, `get_code_context_exa`)
 
 Self-check before first non-trivial tool call: does this task match a skill trigger above? If yes → load it now via the `skill` tool, do NOT proceed without loading.
 
@@ -62,6 +49,19 @@ You only need to load a skill ONCE per conversation. After loaded, follow its in
 </coding_rules>
 
 <shell_commands>
-- Prefer prefixing with `rtk` for token optimization (e.g. `rtk git status`)
+Always prefix shell commands with `rtk` to minimize token consumption.
+
+Examples:
+
+```bash
+rtk git status
+rtk cargo test
+rtk ls src/
+rtk grep "pattern" src/
+rtk find "*.rs" .
+rtk docker ps
+rtk gh pr list
+```
+
 - IF you see `rtk: program not found` or `Binary 'X' not found on PATH` → use the raw command directly, do NOT retry with rtk
 </shell_commands>
