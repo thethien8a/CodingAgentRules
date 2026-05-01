@@ -97,7 +97,7 @@ FROM api_responses,
 | Implicit type conversion | Index bypass, wrong results | Explicit casting |
 | Missing NULL handling | Silent bugs in comparisons | Use `COALESCE`, `IS NULL` |
 
-> **Deep dive**: See `./anti-patterns.md` for 30+ patterns with examples.
+> **Deep dive**: See `reference/anti-patterns.md` for 30+ patterns with examples.
 
 ## AI & Vector Database Integration
 
@@ -286,7 +286,7 @@ SELECT DATE(ts) as date, COUNT(*) as events
 FROM events GROUP BY 1;
 ```
 
-> **Deep dive**: See `./cloud-platforms.md` for Databricks, Aurora, Azure SQL.
+> **Deep dive**: See `reference/cloud-platforms.md` for Databricks, Aurora, Azure SQL.
 
 ## PostgreSQL 17/18 Features
 
@@ -348,7 +348,7 @@ SELECT jt.* FROM api_data,
    └─ Test with production-like data volume
 ```
 
-> **Deep dive**: See `./execution-plan-guide.md` for detailed examples.
+> **Deep dive**: See `reference/execution-plan-guide.md` for detailed examples.
 
 ## Interview-Ready Patterns
 
@@ -394,7 +394,7 @@ USING (
 WHERE u.email = d.email AND u.created_at < d.max_created;
 ```
 
-> **Deep dive**: See `./interview-patterns.md` for 20+ patterns.
+> **Deep dive**: See `reference/interview-patterns.md` for 20+ patterns.
 
 ## Safety Guidelines
 
@@ -413,9 +413,15 @@ WHERE u.email = d.email AND u.created_at < d.max_created;
 5. **Test** → Validate with realistic data volume
 6. **Document** → Explain assumptions, edge cases
 
-## Additional Resources
+## Deep-Dive References
 
-- `./anti-patterns.md` - 30+ SQL anti-patterns with fixes
-- `./execution-plan-guide.md` - Deep dive into EXPLAIN
-- `./cloud-platforms.md` - Platform-specific optimization
-- `./interview-patterns.md` - Common interview questions
+Load only the file relevant to the current task. Each is self-contained.
+
+| When the task is... | Read this file |
+|---|---|
+| Reviewing or refactoring SQL for **bad patterns** (SELECT *, N+1, implicit casts, function-on-column, UNION misuse, NULL handling, OR-conditions blocking indexes) | `reference/anti-patterns.md` |
+| Reading **execution plans** in depth (PostgreSQL EXPLAIN ANALYZE, MySQL EXPLAIN, join strategies, scan types, buffer hit ratios, planner cost model) | `reference/execution-plan-guide.md` |
+| Optimizing for **specific cloud platforms** (Snowflake, BigQuery, Databricks, Aurora, Azure SQL — clustering, partitioning, warehouse sizing, cost) | `reference/cloud-platforms.md` |
+| Solving **interview-style problems** (window functions, CTEs, gap-and-island, top-N per group, deduplication, hierarchical queries) | `reference/interview-patterns.md` |
+
+Read with: `Read` tool → `<skill_dir>/reference/<file>.md`

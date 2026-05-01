@@ -140,14 +140,19 @@ if type(x) == int:          # BAD
 if isinstance(x, int):      # GOOD
 ```
 
-## Additional Resources
+## Deep-Dive References
 
-For detailed guidance on specific topics (portable paths):
-- `./style-guide.md` - PEP 8 conventions, imports, whitespace
-- `./clean-code.md` - SOLID principles with examples
-- `./modern-python.md` - Type hints, dataclasses, async
-- `./tooling.md` - Ruff, mypy, pre-commit, uv configuration
-- `./anti-patterns.md` - Code smells and refactoring patterns
+Load only the file relevant to the current task. Each is self-contained.
+
+| When the task is... | Read this file |
+|---|---|
+| Reviewing class hierarchies, ABCs, dependency injection, or applying SOLID/DRY/KISS/YAGNI | `reference/clean-code.md` |
+| Refactoring code smells (long functions, deep nesting, magic numbers, primitive obsession, feature envy) | `reference/anti-patterns.md` |
+| Writing type hints, choosing between dataclass/NamedTuple/Pydantic, using pathlib, match statements, walrus | `reference/modern-python.md` |
+| Fixing PEP 8 layout, naming, imports, whitespace, docstrings | `reference/style-guide.md` |
+| Setting up `uv`, `ruff`, `mypy`, `pre-commit`, `pyproject.toml`, CI, or VSCode config | `reference/tooling.md` |
+
+Read with: `Read` tool → `<skill_dir>/reference/<file>.md`
 
 ## Checklist Before Committing
 

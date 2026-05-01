@@ -361,13 +361,19 @@ docker-compose*
 
 ---
 
-## Additional Resources
+## Deep-Dive References
 
-- For language-specific patterns (Python, Node.js): `./language-specific.md`
-- For detailed Compose patterns: `./compose-patterns.md`
-- For security deep-dive: `./security.md`
-- For troubleshooting guide: `./troubleshooting.md`
-- For CI/CD integration: `./cicd.md`
+Load only the file relevant to the current task. Each is self-contained.
+
+| When the task is... | Read this file |
+|---|---|
+| Optimizing a Dockerfile for **Python, Node.js, Go, Rust, Java** (language-specific multi-stage patterns, package managers like uv/pnpm/maven) | `reference/language-specific.md` |
+| Designing or debugging **docker-compose.yaml** (networks, volumes, profiles, secrets, healthcheck dependencies, dev vs prod) | `reference/compose-patterns.md` |
+| Hardening images for **production security** (rootless, capabilities, seccomp/AppArmor, image scanning, signing, supply-chain) | `reference/security.md` |
+| Diagnosing **container failures** (build errors, OOM kills, networking issues, permission problems, slow builds, layer cache misses) | `reference/troubleshooting.md` |
+| Integrating Docker into **CI/CD pipelines** (GitHub Actions, GitLab CI, registry pushes, multi-arch builds, BuildKit caching in CI) | `reference/cicd.md` |
+
+Read with: `Read` tool → `<skill_dir>/reference/<file>.md`
 
 ---
 
