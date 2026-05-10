@@ -1,12 +1,12 @@
 # MUST FOLLOW ALL THE RULES BELOW, NO EXCEPTIONS
 
 <skills_autoload>
-Auto-load skill IMMEDIATELY (before any other tool call) when the task matches its description. No exceptions, no "I'll skip this short task".
+Auto-load skill IMMEDIATELY (before any other tool call) when the task matches its description. 
 
-Mapping (load when trigger matches), example:
-- Code edit/search/navigate → `serena-code`
+Example when you see that task requires:
+- Code edit/search/navigate → `serena-code` skill (Prefer using serena-code tools rather than others read/edit tools, fallback to others if serena-code tools not available)
 - Debug error / investigate bug / "not working" / stack trace → `debugger`
-- Web search / find docs / code examples → MCP `exa` (tools: `web_search_exa`, `get_code_context_exa`)
+- Web search / find docs / code examples → MCP `exa`
 
 Self-check before first non-trivial tool call: does this task match a skill trigger above? If yes → load it now via the `skill` tool, do NOT proceed without loading.
 
