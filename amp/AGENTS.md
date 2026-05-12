@@ -1,17 +1,17 @@
 # MUST FOLLOW ALL THE RULES BELOW, NO EXCEPTIONS
 
-<skills_autoload>
-Auto-load skill IMMEDIATELY (before any other tool call) when the task matches its description. 
+<pre_action_checkpoint>
+MANDATORY: Before your FIRST tool call in EVERY reply, output exactly ONE line in this format:
 
-Example when you see that task requires:
-- Code edit/search/navigate → `serena-code` skill (Prefer using serena-code tools rather than others read/edit tools, fallback to others if serena-code tools not available)
-- Debug error / investigate bug / "not working" / stack trace → `debugger`
-- Web search / find docs / code examples → MCP `exa`
+`[gate-check] intent=<ASK|EDIT> code-touching=<yes|no> serena-loaded=<yes|no> next=<load-serena|use-serena|use-builtin|answer-only>`
 
-Self-check before first non-trivial tool call: does this task match a skill trigger above? If yes → load it now via the `skill` tool, do NOT proceed without loading.
+Decision rules (resolve `next` from the other fields):
+- intent=EDIT, code-touching=yes, serena-loaded=no → next=`load-serena` → your FIRST tool call MUST be `skill(name="serena-code")`. No reads, no edits, no greps before that.
+- intent=EDIT, code-touching=yes, serena-loaded=yes → next=`use-serena` → use serena tools (find_symbol, replace_symbol_body, search_for_pattern, etc.). Built-in `Read` / `edit_file` / `create_file` / `Grep` are FORBIDDEN on code files.
+- intent=EDIT, code-touching=no (only .md / .json / .yaml / .toml / .txt / config) → next=`use-builtin` → built-in tools allowed.
+- intent=ASK → next=`answer-only` (pure explanation) OR `use-serena` (read-only investigation on code) OR `use-builtin` (non-code reads).
 
-You only need to load a skill ONCE per conversation. After loaded, follow its instructions.
-</skills_autoload>
+</pre_action_checkpoint>
 
 <response_format>
 - Open every reply with `YOOO!`
