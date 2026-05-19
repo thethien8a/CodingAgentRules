@@ -1,42 +1,52 @@
-# Global Rules
+# MUST FOLLOW ALL THE RULES BELOW, NO EXCEPTIONS
 
-## Subagent-First Law (Non-Negotiable): Call subagents when this task need multiple work (Meaning that this task complicated/need many information to gather/need multiple things to do in parallel):
-1. Check if a subagent matches the task
-2. If YES → delegate via Task tool
-3. If MULTIPLE match → launch ALL in parallel via multiple Task calls
-4. ONLY use tools directly if ZERO subagents match
+<pre_action_checkpoint>
+MANDATORY: Before your FIRST tool call in EVERY reply, output exactly ONE line in this format:
+
+`[gate-check] intent=<ASK|EDIT> code-touching=<yes|no> serena-loaded=<yes|no> next=<load-serena|use-serena|use-builtin|answer-only>`
+
+Decision rules (resolve `next` from the other fields):
+- intent=EDIT, code-touching=yes, serena-loaded=no → next=`load-serena` → your FIRST tool call MUST be `skill(name="serena-code")`. No reads, no edits, no greps before that.
+- intent=EDIT, code-touching=yes, serena-loaded=yes → next=`use-serena` → use serena MCP tools via `skill_mcp`. Built-in `read` / `edit` / `glob` / `grep` are FORBIDDEN on code files when serena is loaded.
+- intent=EDIT, code-touching=no (only .md / .json / .yaml / .toml / .txt / config) → next=`use-builtin` → built-in tools (`read`, `edit`, `glob`, `grep`, `write`) allowed.
+- intent=ASK → next=`answer-only` (pure explanation) OR `use-serena` (read-only investigation on code) OR `use-builtin` (non-code reads like `read`, `glob`).
+
+</pre_action_checkpoint>
+
+<response_format>
+- Open every reply with `YOOO!`
+- Answer in English language (not in Vietnamese)
+- Classify intent first:
+  - ASK → explain only, no edits
+  - EDIT → make changes, then verify
+- IF the request is ambiguous → ask ONE clarifying question before acting
+</response_format>
+
+<information_quality>
+- Search the web before saying "I don't know" — cite source URLs for post-2025 facts
+- For problems with multiple valid solutions → list options + trade-offs, then recommend the best fit
+- Never fabricate APIs, library behavior, or version numbers — verify first
+</information_quality>
+
+<coding_rules>
+- No emoji in code
+- Comments explain WHY, not WHAT.
+</coding_rules>
+
+<shell_commands>
+Always prefix shell commands with `rtk` to minimize token consumption.
 
 Examples:
-- Research/find info → researcher
-- Explore codebase → codebase-explorer (use Serena tools)
-- Fix bug → bug-hunter
 
-## Serena tool using:
-For ALL code operations (read, search, edit), use Serena rather than built-in tools:
-- Read code → `get_symbols_overview` + `find_symbol` (NOT Read tool)
-- Search code → `find_referencing_symbols` / `search_for_pattern` (NOT Grep)
-- Edit code → `replace_symbol_body` / `rename_symbol` (NOT Edit tool)
-- Find files → `find_file` / `list_dir` (NOT Glob)
+```bash
+rtk git status
+rtk cargo test
+rtk ls src/
+rtk grep "pattern" src/
+rtk find "*.rs" .
+rtk docker ps
+rtk gh pr list
+```
 
-Fallback to built-in tools ONLY if Serena fails to connect.
-
-## Question Tool (Mandatory)
-After completing ANY task or answering ANY question, you MUST use the `question` tool to ask if user wants to continue. Keep calling until user confirms they're done or the tool is unavailable.
-
-## Response Format
-1. Start with "YOOO!"
-2. Mirror user's language
-3. Classify: ASK (explain) vs EDIT (code changes)
-4. If unsure → search first, never fabricate
-5. If ambiguous/unclear → use `question` tool to clarify before acting
-
-## Information Quality
-1. Search for anything you're unsure about. Only say "I don't know" AFTER searching confirms no info exists
-2. For problems with multiple solutions: list ALL with pros/cons, then recommend best suitable solutions and explain why that's best suitable. 
-3. Include best practices when applicable. You can give solutions that almost companies using.
-4. Provide relevant source URLs
-5. I need all the newest/up-to-date information, so please search for internet informations/news/etc after year 2025
-
-## Coding Rules
-1. Never use emoji in code
-2. Comments: explain WHY, not WHAT — never restate code
+- IF you see `rtk: program not found` or `Binary 'X' not found on PATH` → use the raw command directly, do NOT retry with rtk
+</shell_commands>
