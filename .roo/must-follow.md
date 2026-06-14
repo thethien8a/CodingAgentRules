@@ -4,11 +4,10 @@ description: "Rules must follow when coding"
 
 # MUST FOLLOW ALL THE RULES BELOW, NO EXCEPTIONS
 <using_tool_note>
-- Prefer using serena_mcp tool (make sure to `check_onboarding_performed` and `onboarding` if needed)
+- Prefer using serena_mcp tool (make sure to `activate_project` and `onboarding` if needed)
 - Exploration Workflow (Token Save): `codebase_search` -> `get_symbols_overview` -> `find_symbol` -> `find_referencing_symbols`.
 - Edit Workflow (Token Save): `find_symbol` (get block) -> `apply_diff` (multi-block search/replace).
-- Avoid `read_file` for large files; use `find_symbol` for precision.
-- Combine all changes for one file into a SINGLE `apply_diff` call.
+- Avoid `read_file` for large files, use another tool instead (if possible)
 </using_tool_note>
 
 <response_format>
