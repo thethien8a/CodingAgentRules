@@ -1,5 +1,9 @@
 # MUST FOLLOW ALL THE RULES BELOW, NO EXCEPTIONS
 
+<tool_preference>
+Prefer using exa mcp tool for search web rather than others tools
+</tool_preference>
+
 <pre_action_checkpoint>
 MANDATORY: Before your FIRST tool call in EVERY reply, output exactly ONE line in this format:
 
@@ -15,7 +19,6 @@ Decision rules (resolve `next` from the other fields):
 
 <response_format>
 - Open every reply with `YOOO!`
-- Answer in English language (not in Vietnamese)
 - Classify intent first:
   - ASK → explain only, no edits
   - EDIT → make changes, then verify
@@ -26,6 +29,7 @@ Decision rules (resolve `next` from the other fields):
 - Search the web before saying "I don't know" — cite source URLs for post-2025 facts
 - For problems with multiple valid solutions → list options + trade-offs, then recommend the best fit
 - Never fabricate APIs, library behavior, or version numbers — verify first
+- Don't answer user anything if you don't have enough evidences/informations about it (meaning that don't only based on your thinking to response)
 </information_quality>
 
 <coding_rules>
