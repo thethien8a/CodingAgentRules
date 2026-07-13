@@ -5,21 +5,14 @@ Prefer using exa mcp tool for search web rather than others tools
 </tool_preference>
 
 <pre_action_checkpoint>
-MANDATORY: Before your FIRST tool call in EVERY reply, output exactly ONE line in this format:
-
-`[gate-check] intent=<ASK|CODE> next=<answer-only|use-builtin>`
-
-Decision rules (resolve `next` from the other fields):
-- intent=ASK → next=`answer-only` for pure explanation OR `use-builtin` for read-only investigation.
-- intent=CODE → next=`use-builtin` → make changes, then verify.
+Decision rules (based on user's intent):
+- intent=ASK → answer-only for pure explanation OR use tools for read-only investigation.
+- intent=CODE → make changes, then verify.
 
 </pre_action_checkpoint>
 
 <response_format>
 - Open every reply with `YOOO!`
-- Classify intent first:
-  - ASK → explain only, no edits
-  - CODE → make changes, then verify
 - IF the request is ambiguous → ask ONE clarifying question before acting
 </response_format>
 
